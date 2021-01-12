@@ -14,6 +14,9 @@ class Player:
         self.units_killed = 0
         self.dice_sides = [x for x in range(1, 7)]
 
+    def get_name(self):
+        return self.name
+
     def roll(self, status):
         if status == "attack":
             random.shuffle(self.dice_sides)
@@ -53,7 +56,8 @@ class Game:
             addable_player = Player(player)
             self.players.append(addable_player)
 
-            self.player_hash_map[player] = index
+            self.player_hash_map[player] = int(index)
+            print(self.player_hash_map)
 
     def turn_game_off(self):
         self.game_status = False
@@ -104,27 +108,28 @@ class Game:
                 self.turn_game_off()
 
             if whats_next == "attack":
-                players_involved_unit_nums = list(input("Who is attacking who, with how many soldiers? "))
-                ##
-                #
-                #
-                #
+                input_str = input("Who is attacking who, with how many soldiers? ")
+                players_involved_unit_nums = input_str.split(" ")
                 # nem mukodik
-                attacker = self.players[self.player_hash_map.get(players_involved_unit_nums[0])]
-                attacker_unit_num = players_involved_unit_nums[1]
-                defender = self.players[self.player_hash_map.get(players_involved_unit_nums[2])]
-                defender_unit = players_involved_unit_numsf[3]
+                print(players_involved_unit_nums)
+                attacker = self.players[int(self.player_hash_map.get(players_involved_unit_nums[0]))]
+                attacker_name = attacker.get_name()
+                attacker_unit_num = int(players_involved_unit_nums[1])
+                defender = self.players[int(self.player_hash_map.get(players_involved_unit_nums[2]))]
+                defender_name = defender.get_name()
+                defender_unit_num = int(players_involved_unit_nums[3])
 
                 cond = True
                 while cond is True:
                     stop = input("vége a támadásnak? ")
-                    if attacker_unit_num < 0 or attacker_unit_num == 0 or defender_unit <= 0 or stop == "Stop":
+                    if attacker_unit_num < 0 or attacker_unit_num == 0 or defender_unit_num <= 0 or stop == "Stop":
                         cond = False
 
                     else:
-                        result = self.duel(attacker, attacker_unit_num, defender, defender_unit)
-                        result[0] = attacker_unit_num
-                        result[1] = defender_unit
+                        result = self.duel(attacker, attacker_unit_num, defender, defender_unit_num)
+                        attacker_unit_num = result[0]
+                        defender_unit_num = result[1]
+                        print(f"{attacker_name}nek {attacker_unit_num} egysége marad míg {defender_name}nem {defender_unit_num} egysége van.")
                         continue
 
 
