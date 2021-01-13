@@ -98,7 +98,7 @@ class Game:
         return [attacker_unit, defender_unit]
 
     def maainloop(self):
-        players = input("Who are the players (string, whitespace separated: )")
+        players = input("Who are the players (string, whitespace separated): ")
         self.set_players(players)
 
         while self.game_status is True:
@@ -109,28 +109,32 @@ class Game:
 
             if whats_next == "attack":
                 input_str = input("Who is attacking who, with how many soldiers? ")
-                players_involved_unit_nums = input_str.split(" ")
-                # nem mukodik
-                print(players_involved_unit_nums)
-                attacker = self.players[int(self.player_hash_map.get(players_involved_unit_nums[0]))]
-                attacker_name = attacker.get_name()
-                attacker_unit_num = int(players_involved_unit_nums[1])
-                defender = self.players[int(self.player_hash_map.get(players_involved_unit_nums[2]))]
-                defender_name = defender.get_name()
-                defender_unit_num = int(players_involved_unit_nums[3])
+                try:
+                    players_involved_unit_nums = input_str.split(" ")
+                    # nem mukodik
+                    print(players_involved_unit_nums)
+                    attacker = self.players[int(self.player_hash_map.get(players_involved_unit_nums[0]))]
+                    attacker_name = attacker.get_name()
+                    attacker_unit_num = int(players_involved_unit_nums[1])
+                    defender = self.players[int(self.player_hash_map.get(players_involved_unit_nums[2]))]
+                    defender_name = defender.get_name()
+                    defender_unit_num = int(players_involved_unit_nums[3])
 
-                cond = True
-                while cond is True:
-                    stop = input("vége a támadásnak? ")
-                    if attacker_unit_num < 0 or attacker_unit_num == 0 or defender_unit_num <= 0 or stop == "Stop":
-                        cond = False
+                    cond = True
+                    while cond is True:
+                        stop = input("vége a támadásnak? ")
+                        if attacker_unit_num < 0 or attacker_unit_num == 0 or defender_unit_num <= 0 or stop == "Stop":
+                            cond = False
 
-                    else:
-                        result = self.duel(attacker, attacker_unit_num, defender, defender_unit_num)
-                        attacker_unit_num = result[0]
-                        defender_unit_num = result[1]
-                        print(f"{attacker_name}nek {attacker_unit_num} egysége marad míg {defender_name}nem {defender_unit_num} egysége van.")
-                        continue
+                        else:
+                            result = self.duel(attacker, attacker_unit_num, defender, defender_unit_num)
+                            attacker_unit_num = result[0]
+                            defender_unit_num = result[1]
+                            print(f"{attacker_name}nek {attacker_unit_num} egysége marad míg {defender_name}nem {defender_unit_num} egysége van.")
+                            continue
+
+                except Exception:
+                    continue
 
 
 game = Game()
